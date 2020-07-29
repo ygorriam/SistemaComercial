@@ -1,11 +1,12 @@
 
-package formularios;
+package visao;
 
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import controle.ConectaBanco;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import utilitarios.ConectaBanco;
+import modelo.ModeloCidade;
 
 
 public class FrmCidade extends javax.swing.JFrame {
@@ -86,6 +87,11 @@ public class FrmCidade extends javax.swing.JFrame {
         jButtuonNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add1.png"))); // NOI18N
 
         jButtonRenomear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Save.png"))); // NOI18N
+        jButtonRenomear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRenomearActionPerformed(evt);
+            }
+        });
 
         jButtonAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Pencil.png"))); // NOI18N
 
@@ -256,6 +262,22 @@ public class FrmCidade extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonRenomearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRenomearActionPerformed
+       
+        try {
+            ModeloCidade mod = new ModeloCidade();
+        mod.setNome(jTextFieldNome.getText());
+        connEstado.executaSQL("select * from estados where nome_estado="+jComboBox1.getSelectedItem());
+        connEstado.rs.first();
+        mod.setCod_estado(connEstado.rs.getInt("id_estado"));
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmCidade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButtonRenomearActionPerformed
 
    
     public static void main(String args[]) {
