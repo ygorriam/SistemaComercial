@@ -1,12 +1,34 @@
 
 package formularios;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import utilitarios.ConectaBanco;
+
 
 public class FrmCidade extends javax.swing.JFrame {
 
-   
+    ConectaBanco connEstado = new ConectaBanco();
+    
     public FrmCidade() {
         initComponents();
+        connEstado.conexao();
+        connEstado.executaSQL("select * from estados order by nome_estado");
+        jComboBox1.removeAllItems();//remove todos os itens da combobox 
+        
+        try {
+            connEstado.rs.first();
+            do{
+                jComboBox1.addItem(connEstado.rs.getString("nome_estado"));
+            }while (connEstado.rs.next());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane,"erro ao prencher combobox estado"+ex);
+        }
+        
+        
+        
     }
 
     
@@ -51,7 +73,7 @@ public class FrmCidade extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabelCodigo.setText("Código:");
 
@@ -78,6 +100,11 @@ public class FrmCidade extends javax.swing.JFrame {
         jButtonProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Next-Track.png"))); // NOI18N
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/logout.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -181,7 +208,7 @@ public class FrmCidade extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel1.setText("Cadastro de Estados");
+        jLabel1.setText("Cadastro de Cidade");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -225,6 +252,10 @@ public class FrmCidade extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
    
     public static void main(String args[]) {
