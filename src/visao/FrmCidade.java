@@ -4,6 +4,7 @@ package visao;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import controle.ConectaBanco;
+import controle.ControleCidade;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.ModeloCidade;
@@ -12,17 +13,19 @@ import modelo.ModeloCidade;
 public class FrmCidade extends javax.swing.JFrame {
 
     ConectaBanco connEstado = new ConectaBanco();
+    ConectaBanco connCidade= new ConectaBanco();
     
     public FrmCidade() {
         initComponents();
         connEstado.conexao();
+        connCidade.conexao();
         connEstado.executaSQL("select * from estados order by nome_estado");
-        jComboBox1.removeAllItems();//remove todos os itens da combobox 
+        jComboBoxEstado.removeAllItems();//remove todos os itens da combobox 
         
         try {
             connEstado.rs.first();
             do{
-                jComboBox1.addItem(connEstado.rs.getString("nome_estado"));
+                jComboBoxEstado.addItem(connEstado.rs.getString("nome_estado"));
             }while (connEstado.rs.next());
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane,"erro ao prencher combobox estado"+ex);
@@ -45,11 +48,10 @@ public class FrmCidade extends javax.swing.JFrame {
         jLabelCodigo = new javax.swing.JLabel();
         jLabelNome = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jTextFieldCodigo = new javax.swing.JTextField();
         jTextFieldNome = new javax.swing.JTextField();
         jButtuonNovo = new javax.swing.JButton();
-        jButtonRenomear = new javax.swing.JButton();
+        jButtonSalvar = new javax.swing.JButton();
         jButtonAlterar = new javax.swing.JButton();
         jButtonExcluir = new javax.swing.JButton();
         jButtonPrimeiro = new javax.swing.JButton();
@@ -59,6 +61,7 @@ public class FrmCidade extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jComboBoxEstado = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -82,22 +85,30 @@ public class FrmCidade extends javax.swing.JFrame {
 
         jLabel2.setText("Estado:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButtuonNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add1.png"))); // NOI18N
 
-        jButtonRenomear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Save.png"))); // NOI18N
-        jButtonRenomear.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Save.png"))); // NOI18N
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRenomearActionPerformed(evt);
+                jButtonSalvarActionPerformed(evt);
             }
         });
 
         jButtonAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Pencil.png"))); // NOI18N
+        jButtonAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAlterarActionPerformed(evt);
+            }
+        });
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/delete.png"))); // NOI18N
 
         jButtonPrimeiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/go-previous.png"))); // NOI18N
+        jButtonPrimeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPrimeiroActionPerformed(evt);
+            }
+        });
 
         jButtonUltimo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/go-next.png"))); // NOI18N
 
@@ -125,6 +136,8 @@ public class FrmCidade extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
+        jComboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -144,14 +157,14 @@ public class FrmCidade extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56))))
+                        .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(87, 87, 87))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButtuonNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonRenomear)
+                        .addComponent(jButtonSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAlterar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -182,14 +195,14 @@ public class FrmCidade extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelNome)
                             .addComponent(jLabel2)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButtonAlterar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonRenomear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButtuonNovo, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,21 +276,34 @@ public class FrmCidade extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButtonRenomearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRenomearActionPerformed
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
        
         try {
             ModeloCidade mod = new ModeloCidade();
         mod.setNome(jTextFieldNome.getText());
-        connEstado.executaSQL("select * from estados where nome_estado="+jComboBox1.getSelectedItem());
-        connEstado.rs.first();
+        connEstado.executaSQL("select * from estados where nome_estado='" + jComboBoxEstado.getSelectedItem()+"'");
+        connEstado.rs.first();  
+        //JOptionPane.showMessageDialog(rootPane,connEstado.rs.getInt("id_estado"));
         mod.setCod_estado(connEstado.rs.getInt("id_estado"));
+        ControleCidade control = new ControleCidade();
+        control.InserirCidade(mod);
         } catch (SQLException ex) {
             Logger.getLogger(FrmCidade.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
         
-    }//GEN-LAST:event_jButtonRenomearActionPerformed
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
+
+    private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAlterarActionPerformed
+
+    private void jButtonPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrimeiroActionPerformed
+        
+        con
+        
+    }//GEN-LAST:event_jButtonPrimeiroActionPerformed
 
    
     public static void main(String args[]) {
@@ -306,6 +332,7 @@ public class FrmCidade extends javax.swing.JFrame {
 
         
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new FrmCidade().setVisible(true);
             }
@@ -320,10 +347,10 @@ public class FrmCidade extends javax.swing.JFrame {
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonPrimeiro;
     private javax.swing.JButton jButtonProximo;
-    private javax.swing.JButton jButtonRenomear;
+    private javax.swing.JButton jButtonSalvar;
     private javax.swing.JButton jButtonUltimo;
     private javax.swing.JButton jButtuonNovo;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelCodigo;
