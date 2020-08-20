@@ -28,7 +28,17 @@ public class ControleCidade {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"Erro na inserção. \n ERRO:"+ex);
             }
-        
+        connCidade.desconecta();
     }
-    
+    public void ExcluiCidade(ModeloCidade mod){
+        connCidade.conexao();
+            try {
+                PreparedStatement pst = connCidade.conn.prepareStatement("delete from cidade where id_cidade=?");
+                pst.setInt(1,mod.getCod());
+                pst.execute();
+                JOptionPane.showMessageDialog(null,"Dados excluidos com sucesso");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro na exclusão. \n ERRO:"+ex);
+            }
+    }
 }
