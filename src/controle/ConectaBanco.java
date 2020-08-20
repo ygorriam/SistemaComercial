@@ -43,11 +43,11 @@ public class ConectaBanco {
         
         try {
             conn.close();
-            JOptionPane.showMessageDialog(null,"desconetado com sucesso!");
+            //JOptionPane.showMessageDialog(null,"desconetado com sucesso!");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"erro ao fechar  conexão!\n Erro:"+ex.getMessage());
             
-            Logger.getLogger(ConectaBanco.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
     }

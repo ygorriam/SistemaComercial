@@ -40,5 +40,20 @@ public class ControleCidade {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"Erro na exclusão. \n ERRO:"+ex);
             }
+            connCidade.desconecta();
+    }
+    public void AlteraCidade(ModeloCidade mod){
+            connCidade.conexao();
+            try {
+                PreparedStatement pst = connCidade.conn.prepareStatement("update cidade set nome_cidades=?, id_estado =? where id_cidade=?");
+                pst.setString(1, mod.getNome());
+                pst.setInt(2, mod.getCod_estado());
+                pst.setInt(3, mod.getCod());
+                pst.execute();
+                JOptionPane.showMessageDialog(null,"Dados alterados com sucesso");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro ao alterar. \n ERRO:"+ex);
+            }
+        
     }
 }
