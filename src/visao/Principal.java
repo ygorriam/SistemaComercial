@@ -60,6 +60,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Bairro");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Telefone");
@@ -128,6 +133,11 @@ public class Principal extends javax.swing.JFrame {
         frm.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+       FrmBairro frm = new FrmBairro();
+        frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
