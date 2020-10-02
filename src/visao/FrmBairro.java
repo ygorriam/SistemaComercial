@@ -552,11 +552,9 @@ public class FrmBairro extends javax.swing.JFrame {
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
        
    }
-     
-    /**
-     *
-     */
+   
     public void AtualizaCombo(){
+        conn.conexao();
          jComboBoxCidade.removeAllItems();
          try {
              conn.executaSQL("select * from cidade order by nome_cidades");
