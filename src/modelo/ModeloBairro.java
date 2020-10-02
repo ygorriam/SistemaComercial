@@ -48,5 +48,9 @@ public class ModeloBairro {
         this.cod = cod;
     }
 
+    public void setTel(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
    
